@@ -22,6 +22,7 @@ static inline void printError(void) {
 // function prototypes
 void printError(void);
 char *trimWs(char *s);
+char **getPathDirs();
 char **splitWhitespace(char *line);
 
 #endif
