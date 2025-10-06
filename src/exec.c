@@ -1,17 +1,18 @@
+// exec.c
 #include "wish.h"
 
 void executeCommand(char **argv) {
     char **pathDirs = getPathDirs();
 
     if (!pathDirs || !pathDirs[0]) {
-        pathError();
+        printError();
         return;
     }
 
     pid_t pid = fork();
 
     if (pid < 0) {
-        pathError();
+        printError();
         return;
     }
 
@@ -21,13 +22,13 @@ void executeCommand(char **argv) {
             snprintf(path, sizeof(path), "%s/%s", pathDirs[i], argv[0]);
             if (access(path, X_OK) == 0) {
                 execv(path, argv);
-                pathError();
+                printError();
                 _exit(1);
             }
         }
 
         // if no path worked command not found error given
-        pathError();
+        printError();
         _exit(1);
     } else {
         // parent waits for child to finish

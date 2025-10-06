@@ -2,7 +2,7 @@ CC = gcc
 CFLAGS = -Wall
 INCLUDES = -Iinclude
 
-SRC = src/main.c src/parse.c
+SRC = src/main.c src/parse.c src/builtins.c src/exec.c
 OBJ = $(SRC:.c=.o)
 
 all: wish
