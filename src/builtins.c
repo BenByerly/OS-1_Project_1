@@ -1,20 +1,25 @@
+// builtins.c
 #include "wish.h"
 
-static char **pathDirs = NULL;
+char **pathDirs = NULL;
 
 // initialize the path list with a default directory
 void initPath() {
-    pathDirs = malloc(2 * sizeof(char *));
-    pathDirs[0] = strdup("/bin");
-    pathDirs[1] = NULL;
+    freePath();
+    pathDirs = NULL;
 }
 
 // free up memory used by path array
 void freePath() {
-    if (!pathDirs) return;
-    for (int i = 0; pathDirs[i]; i++) free(pathDirs[i]);
+    if (!pathDirs) {
+        return;
+    }
+    for (int i = 0; pathDirs[i]; i++){
+        free(pathDirs[i]);
+    }
     free(pathDirs);
     pathDirs = NULL;
+    
 }
 
 // return pointer to current list
