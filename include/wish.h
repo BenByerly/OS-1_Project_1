@@ -25,5 +25,7 @@ char *trimWs(char *s);
 char **getPathDirs();
 char **splitWhitespace(char *line);
 int handleBuiltin(char **argv);
+void initPath(void);
+void freePath(void);
 
 #endif

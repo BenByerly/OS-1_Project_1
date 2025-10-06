@@ -1,13 +1,18 @@
+// main.c
 #include "wish.h"
 
 // waits for user input/user to type exit
- 
+
+
 int main(int argc, char *argv[]) {
     // argument validation
     if (argc > 2) {
         printError();
         exit(1);
     }
+
+    // initiliazes /bin as default path
+    initPath();
  
     FILE *input = stdin;
     int interactive = 1;
@@ -49,24 +54,34 @@ int main(int argc, char *argv[]) {
         if (*trimmed == '\0') // ignore empty lines
             continue;
  
-        // split
+        // split 
+	// argvv holds the user's commands 
         char **argvv = splitWhitespace(trimmed);
         if (argvv[0] == NULL)
             continue;
  
-        // for now, just print the parsed command
-        printf("Command: %s\n", argvv[0]);
-        for (int i = 1; argvv[i]; i++) {
-            printf("Arg[%d]: %s\n", i, argvv[i]);
-        }
+        // check builtins
+	if (handleBuiltin(argvv)) {
+	    for (int i = 0; argvv[i]; i++) {
+	        free(argvv[i]);
+	    }
+	    free(argvv);
+	    continue;
+	}
+	executeCommand(argvv);
  
         // free allocated argument list
-        for (int i = 0; argvv[i]; i++) free(argvv[i]);
+        for (int i = 0; argvv[i]; i++) {
+	    free(argvv[i]);
+	    continue;
+	}
         free(argvv);
     }
  
     // cleanup (good practice, will probably never run tho)
     free(line);
-    if (input != stdin) fclose(input);
+    if (input != stdin) {
+        fclose(input);
+    }
     return 0;
 }
