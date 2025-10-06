@@ -24,5 +24,6 @@ void printError(void);
 char *trimWs(char *s);
 char **getPathDirs();
 char **splitWhitespace(char *line);
+int handleBuiltin(char **argv);
 
 #endif
