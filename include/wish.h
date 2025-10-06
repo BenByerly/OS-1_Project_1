@@ -12,9 +12,16 @@
 #define PROMPT "wish> "
 #define ERRMSG "An error has occurred\n"
 
+// prints the error message to stdout
+static inline void printError(void) {
+  ssize_t result = write(STDERR_FILENO, ERRMSG, strlen(ERRMSG));
+  (void)result;
+}
+
+
 // function prototypes
-void print_error(void);
-char *trim_ws(char *s);
-char **split_whitespace(char *line);
+void printError(void);
+char *trimWs(char *s);
+char **splitWhitespace(char *line);
 
 #endif
