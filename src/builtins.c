@@ -1,5 +1,6 @@
 /*
-      Last edited by Levi S. and Benjamin B.     10/6/2025
+      Edited by Levi S. and Benjamin B.     10/6/2025
+      Last edited by Mark W.    10/7/2025
  
 */
 
@@ -10,10 +11,13 @@
 char **pathDirs = NULL;
 
 // initialize the path list with a default directory
-void initPath() {
+void initPath() { // Changed default serch path to /bin because my path list was empty otherwise and I couldnt test anything ~ Mark
     freePath();
-    pathDirs = NULL;
+    pathDirs = malloc(2 * sizeof(char *));
+    pathDirs[0] = strdup("/bin");
+    pathDirs[1] = NULL;
 }
+
 
 // free up memory used by path array
 void freePath() {
