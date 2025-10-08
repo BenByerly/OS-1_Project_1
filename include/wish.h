@@ -1,5 +1,6 @@
 /*
-      Last edited by Levi S. and Benjamin B.     10/6/2025
+      Edited by Levi S. and Benjamin B.     10/6/2025
+      Last edited by Mark W.    10/7/2025
  
 */
 
@@ -25,6 +26,7 @@ static inline void printError(void) {
 
 
 // function prototypes
+void executeCommand(char **argv); // I had to add this for it to compile for me even though i didnt add this function. ~ Mark
 void printError(void);
 char *trimWs(char *s);
 char **getPathDirs();
