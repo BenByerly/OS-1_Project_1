@@ -5,3 +5,4 @@
 4. Levi and Ben reworked bultins.c to properlly handle 'path /bin'. 10/6/25
 5. Levi and Ben updated builtins.c to fix /bin being automatically loaded that was set in the past for ease of access.
 6. Levi and Ben updated comments to the top of all files to show progress/last edited/etc....
+7. Mark added redirection functionality so you can redirect output to a file using the '>' character.

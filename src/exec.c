@@ -18,7 +18,7 @@ void executeCommand(char **argv) {
         return;
     }
 
-    // Added redirection detection for operator ">"
+    // Added redirection detection for operator ">" ~ Mark
     int redirectIndex = -1;
     char *outfile = NULL;
     for (int i = 0; argv[i]; i++) {
@@ -47,7 +47,7 @@ void executeCommand(char **argv) {
     }
 
     if (pid == 0) {
-        // Added output redirection handling
+        // Added output redirection handling ~ Mark
         if (outfile) {
             int fd = open(outfile, O_WRONLY | O_CREAT | O_TRUNC, S_IRWXU);
             if (fd < 0) {
