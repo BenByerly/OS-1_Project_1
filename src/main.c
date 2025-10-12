@@ -1,5 +1,5 @@
 /*
-      Last edited by Levi S. and Benjamin B.     10/6/2025
+      Last edited by Gage J.     10/12/2025
  
 */
 
@@ -59,29 +59,61 @@ int main(int argc, char *argv[]) {
         char *trimmed = trimWs(line);
         if (*trimmed == '\0') // ignore empty lines
             continue;
- 
-        // split 
-	// argvv holds the user's commands 
-        char **argvv = splitWhitespace(trimmed);
-        if (argvv[0] == NULL)
+
+        // Split input by '&' for parallel commands
+        char *line_copy = strdup(trimmed);
+        if (!line_copy) {
+            printError();
             continue;
- 
-        // check builtins
-	if (handleBuiltin(argvv)) {
-	    for (int i = 0; argvv[i]; i++) {
-	        free(argvv[i]);
-	    }
-	    free(argvv);
-	    continue;
-	}
-	executeCommand(argvv);
- 
-        // free allocated argument list
-        for (int i = 0; argvv[i]; i++) {
-	    free(argvv[i]);
-	    continue;
-	}
-        free(argvv);
+        }
+        char **commands = NULL;
+        // splitByAmpersand may not be declared in wish.h, so declare here
+        extern char **splitByAmpersand(char *line);
+        commands = splitByAmpersand(line_copy);
+        int parallel_count = 0;
+        for (int i = 0; commands[i]; i++) parallel_count++;
+
+        // If only one command, handle as before
+        if (parallel_count == 1) {
+            char **argvv = splitWhitespace(commands[0]);
+            if (argvv[0] == NULL) {
+                free(commands[0]);
+                free(commands);
+                free(line_copy);
+                continue;
+            }
+            if (handleBuiltin(argvv)) {
+                for (int i = 0; argvv[i]; i++) free(argvv[i]);
+                free(argvv);
+                free(commands[0]);
+                free(commands);
+                free(line_copy);
+                continue;
+            }
+            executeCommand(argvv);
+            for (int i = 0; argvv[i]; i++) free(argvv[i]);
+            free(argvv);
+        } else {
+            // For multiple commands, check builtins and execute in parallel
+            int has_builtin = 0;
+            for (int i = 0; commands[i]; i++) {
+                char **argvv = splitWhitespace(commands[i]);
+                if (argvv[0] && handleBuiltin(argvv)) {
+                    has_builtin = 1;
+                }
+                for (int j = 0; argvv[j]; j++) free(argvv[j]);
+                free(argvv);
+            }
+            if (!has_builtin) {
+                // Only execute in parallel if no builtins present
+                extern void executeParallelCommands(char **commands);
+                executeParallelCommands(commands);
+            }
+        }
+        // Free commands array
+        for (int i = 0; commands[i]; i++) free(commands[i]);
+        free(commands);
+        free(line_copy);
     }
  
     // cleanup (good practice, will probably never run tho)
